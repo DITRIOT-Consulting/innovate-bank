@@ -21,7 +21,7 @@ podTemplate(label: 'buildpod',
                 #!/bin/bash
                 NAMESPACE='default'
                 REGISTRY='mycluster.icp:8500'
-                docker build -t \${REGISTRY}/\${NAMESPACE}/accounts:${env.BUILD_NUMBER} .
+                docker build -t \${REGISTRY}/\${NAMESPACE}/accounts:${env.BUILD_NUMBER} accounts/
                 """
             } 
             stage('Push Docker Image to Registry') {
