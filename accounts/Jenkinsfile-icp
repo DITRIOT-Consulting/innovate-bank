@@ -44,10 +44,10 @@ podTemplate(label: 'buildpod',
                     sh """                                       
                     #!/bin/bash                                       
                     set +e                                       
-                    NAMESPACE=`default`                         
-                    REGISTRY=`mycluster.icp:8500`                         
-                    CHARTNAME=`helm list --deployed --short accounts`
+                    NAMESPACE='default'                         
+                    REGISTRY='mycluster.icp:8500'
                     helm init --client-only
+                    CHARTNAME=`helm list --deployed --short accounts`
                     helm list \${CHARTNAME}                                           
                     if [ \${?} -ne "0" ]; then                                        
                     # No chart release to update                                       
