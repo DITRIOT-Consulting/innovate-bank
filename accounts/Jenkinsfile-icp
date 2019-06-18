@@ -10,7 +10,7 @@ podTemplate(label: 'buildpod',
     imagePullSecrets:['defregistrykey'],
     containers: [
         containerTemplate(name: 'helm', image: 'lachlanevenson/k8s-helm:latest', command: 'cat', ttyEnabled: true),
-        containerTemplate(name: 'cloudctl', image: 'ibmcase/kube-helm-cloudctl-mcmctl', command: 'cat', ttyEnabled: true),
+        containerTemplate(name: 'cloudctl', image: 'ibmcase/kube-helm-cloudctl-mcmctl:3.1.2', command: 'cat', ttyEnabled: true),
         containerTemplate(name: 'docker', image: 'mycluster.icp:8500/default/docker:latest', command: 'cat', ttyEnabled: true, imagePullSecrets:['defregistrykey'],alwaysPullImage: true),
 ]) 
 {
