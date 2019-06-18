@@ -2,8 +2,8 @@ podTemplate(label: 'buildpod',
     volumes: [
         hostPathVolume(hostPath: '/etc/docker/certs.d', mountPath: '/etc/docker/certs.d'),
         hostPathVolume(hostPath: '/var/run/docker.sock', mountPath: '/var/run/docker.sock'),
-        hostPathVolume(hostPath: '/root/.helm/cert.pem', mountPath: '/home/jenkins/.helm/cert.pem'),
-        hostPathVolume(hostPath: '/root/.helm/key.pem', mountPath: '/home/jenkins/.helm/key.pem'),
+        hostPathVolume(hostPath: '/root/.helm/cert.pem', mountPath: '/home/jenkins/.helm/'),
+        hostPathVolume(hostPath: '/root/.helm/key.pem', mountPath: '/home/jenkins/.helm/'),
         secretVolume(secretName: 'defregistrykey', mountPath: '/var/run/secrets/registry-account'),
         configMapVolume(configMapName: 'def-registry-config', mountPath: '/var/run/configs/registry-config')
     ],
