@@ -56,7 +56,7 @@ podTemplate(label: 'buildpod',
                     NAMESPACE='default'                         
                     REGISTRY='mycluster.icp:8500'
                     kubectl get pods
-                    helm init --tls --client-only --host 192.168.0.151:31514
+                    helm init --client-only --host 192.168.0.151:31514
                     CHARTNAME=`helm list --deployed --short accounts`
                     helm list --tls \${CHARTNAME}                                           
                     if [ \${?} -ne "0" ]; then                                        
