@@ -55,7 +55,7 @@ podTemplate(label: 'buildpod',
                     set +e                                       
                     NAMESPACE='default'                         
                     REGISTRY='mycluster.icp:8500'
-                    helm init --host 192.168.0.151:31514
+                    helm init --client-only --host 192.168.0.151:31514
                     CHARTNAME=`helm list --deployed --tls --short accounts`
                     helm list \${CHARTNAME}                                           
                     if [ \${?} -ne "0" ]; then                                        
