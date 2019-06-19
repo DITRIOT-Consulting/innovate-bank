@@ -55,7 +55,6 @@ podTemplate(label: 'buildpod',
                     set +e                                       
                     NAMESPACE='default'                         
                     REGISTRY='mycluster.icp:8500'
-                    kubectl get pods
                     helm init --client-only --host 192.168.0.151:31514
                     CHARTNAME=`helm list --tls --deployed --short accounts`
                     helm list --tls \${CHARTNAME}                                           
