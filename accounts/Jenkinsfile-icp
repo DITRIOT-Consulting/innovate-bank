@@ -56,7 +56,7 @@ podTemplate(label: 'buildpod',
                     NAMESPACE='default'                         
                     REGISTRY='mycluster.icp:8500'
                     helm init --client-only --host 192.168.0.151:31514
-                    CHARTNAME=`helm list --deployed --tls --short accounts`
+                    CHARTNAME=`helm list --deployed --short accounts`
                     helm list \${CHARTNAME}                                           
                     if [ \${?} -ne "0" ]; then                                        
                     # No chart release to update                                       
