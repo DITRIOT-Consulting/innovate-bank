@@ -64,9 +64,7 @@ podTemplate(label: 'buildpod',
                     helm package ./accounts/chart/innovate-accounts/
                     fi                                                              
                     # Update Release                                        
-                    helm upgrade --tls accounts ./accounts/chart/innovate-accounts/ 
-                    --set image.repository=\${REGISTRY}/\${NAMESPACE}/accounts
-                    --set image.tag=${env.BUILD_NUMBER}                          
+                    helm upgrade --tls accounts ./accounts/chart/innovate-accounts/ --set image.repository=\${REGISTRY}/\${NAMESPACE}/accounts --set image.tag=${env.BUILD_NUMBER}                          
                     """
                                              
         
