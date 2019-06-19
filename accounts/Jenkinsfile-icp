@@ -42,14 +42,9 @@ podTemplate(label: 'buildpod',
         }
         
         container('cloudctl') {         
-            stage('Login to ICP') {
-            
-            sh 'cloudctl login -a https://192.168.0.150:8443 -u admin -p admin -n default'
-            
-            }
             
             stage('Deploy new helm release') {     
-
+                    sh 'cloudctl login -a https://192.168.0.150:8443 -u admin -p admin -n default'
                     sh """                                       
                     #!/bin/bash                                       
                     set +e                                       
