@@ -53,7 +53,8 @@ podTemplate(label: 'buildpod',
                     helm init --client-only --host 192.168.0.151:31514
                     CHARTNAME='innovate-accounts'
                     helm list --tls \${CHARTNAME}                                           
-                    if [ \${?} -ne "0" ] then                                        
+                    if [ \${?} -ne "0" ] 
+                    then                                        
                     # No chart release to update                                       
                         helm package ./accounts/chart/innovate-accounts/
                     else
