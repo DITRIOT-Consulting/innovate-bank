@@ -56,7 +56,7 @@ podTemplate(label: 'buildpod',
                     if [ \${?} -ne '0' ]
                     then                                        
                     # No chart release to update                                       
-                        helm package -u ./portal/chart/innovate-transactions/
+                        helm package -u ./transactions/chart/innovate-transactions/
                         cloudctl catalog load-chart -a innovate-transactions-1.0.0.tgz
                         helm install --name innovate-transactions local/innovate-transactions --set 'image.repository=mycluster.icp:8500/default/innovate-transactions' --set 'image.tag=${env.BUILD_NUMBER}'
                     else
