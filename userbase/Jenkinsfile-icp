@@ -1,1 +1,72 @@
+podTemplate(label: 'buildpod',
+    volumes: [
+        hostPathVolume(hostPath: '/etc/docker/certs.d', mountPath: '/etc/docker/certs.d'),
+        hostPathVolume(hostPath: '/var/run/docker.sock', mountPath: '/var/run/docker.sock'),
+        hostPathVolume(hostPath: '/root/.helm/cert.pem', mountPath: '/home/jenkins/.helm/'),
+        hostPathVolume(hostPath: '/root/.helm/key.pem', mountPath: '/home/jenkins/.helm/'),
+        secretVolume(secretName: 'defregistrykey', mountPath: '/var/run/secrets/registry-account'),
+        configMapVolume(configMapName: 'def-registry-config', mountPath: '/var/run/configs/registry-config')
+    ],
+    imagePullSecrets:['defregistrykey'],
+    containers: [
+        containerTemplate(name: 'helm', image: 'lachlanevenson/k8s-helm:latest', command: 'cat', ttyEnabled: true),
+        containerTemplate(name: 'cloudctl', image: 'ibmcase/kube-helm-cloudctl-mcmctl:3.1.2', command: 'cat', ttyEnabled: true),
+        containerTemplate(name: 'docker', image: 'mycluster.icp:8500/default/docker:latest', command: 'cat', ttyEnabled: true, imagePullSecrets:['defregistrykey'],alwaysPullImage: true),
+]) 
+{
 
+    node('buildpod') {
+        checkout scm     
+        container('docker') {
+            stage('Build Docker Image') {
+                sh """
+                #!/bin/bash
+                NAMESPACE='default'
+                REGISTRY='mycluster.icp:8500'
+                docker build -t \${REGISTRY}/\${NAMESPACE}/innovate-userbase:${env.BUILD_NUMBER} userbase/
+                """
+            } 
+            stage('Push Docker Image to Registry') {
+                sh """
+                #!/bin/bash
+                NAMESPACE='default'
+                REGISTRY='mycluster.icp:8500'
+                set +x
+                DOCKER_USER='admin'
+                DOCKER_PASSWORD='admin'
+                docker login -u=\${DOCKER_USER} -p=\${DOCKER_PASSWORD} \${REGISTRY}
+                set -x
+                docker push \${REGISTRY}/\${NAMESPACE}/innovate-userbase:${env.BUILD_NUMBER}
+                """
+            }
+        }
+        
+        container('cloudctl') {         
+            
+            stage('Deploy new helm release') {     
+                    sh 'cloudctl login -a https://192.168.0.150:8443 -u admin -p admin -n default'
+                    sh """                                       
+                    #!/bin/bash                                       
+                    set +e                                       
+                    NAMESPACE='default'                         
+                    REGISTRY='mycluster.icp:8500'
+                    helm init --client-only --host 192.168.0.151:31514
+                    CHARTNAME='innovate-userbase'
+                    helm history --tls \${CHARTNAME}                                           
+                    if [ \${?} -ne '0' ]
+                    then                                        
+                    # No chart release to update                                       
+                        helm package -u ./portal/chart/innovate-userbase/
+                        cloudctl catalog load-chart -a innovate-userbase-1.0.0.tgz
+                        helm install --name innovate-userbase local/innovate-userbase --set 'image.repository=mycluster.icp:8500/default/innovate-userbase' --set 'image.tag=${env.BUILD_NUMBER}'
+                    else
+                    # Update Release                                        
+                        helm upgrade --tls innovate-userbase ./userbase/chart/innovate-userbase/ --set image.repository=\${REGISTRY}/\${NAMESPACE}/innovate-userbase --set image.tag=${env.BUILD_NUMBER}
+                    fi
+                    """
+                                             
+        
+           } }
+             
+}
+}
