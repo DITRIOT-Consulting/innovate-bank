@@ -56,7 +56,9 @@ podTemplate(label: 'buildpod',
                     if [ \${?} -ne '0' ]
                     then                                        
                     # No chart release to update                                       
-                        helm package ./accounts/chart/innovate-accounts/
+                        helm package -u ./accounts/chart/innovate-accounts/
+                        cloudctl catalog load-chart -a innovate-accounts-1.0.0.tgz
+                        helm install --name innovate-accounts innovate-accounts --set image.repository=\${REGISTRY}/\${NAMESPACE}/accounts --set image.tag=${env.BUILD_NUMBER}
                     else
                     # Update Release                                        
                         helm upgrade --tls innovate-accounts ./accounts/chart/innovate-accounts/ --set image.repository=\${REGISTRY}/\${NAMESPACE}/accounts --set image.tag=${env.BUILD_NUMBER}
