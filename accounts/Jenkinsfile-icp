@@ -55,10 +55,11 @@ podTemplate(label: 'buildpod',
                     helm list --tls \${CHARTNAME}                                           
                     if [ \${?} -ne "0" ]; then                                        
                     # No chart release to update                                       
-                    helm package ./accounts/chart/innovate-accounts/
-                    fi                                                              
+                        helm package ./accounts/chart/innovate-accounts/
+                    else
                     # Update Release                                        
-                    helm upgrade --tls accounts ./accounts/chart/innovate-accounts/ --set image.repository=\${REGISTRY}/\${NAMESPACE}/accounts --set image.tag=${env.BUILD_NUMBER}                          
+                        helm upgrade --tls accounts ./accounts/chart/innovate-accounts/ --set image.repository=\${REGISTRY}/\${NAMESPACE}/accounts --set image.tag=${env.BUILD_NUMBER}
+                    fi
                     """
                                              
         
