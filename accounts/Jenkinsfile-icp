@@ -52,8 +52,8 @@ podTemplate(label: 'buildpod',
                     REGISTRY='mycluster.icp:8500'
                     helm init --client-only --host 192.168.0.151:31514
                     CHARTNAME='innovate-accounts'
-                    helm list --tls \${CHARTNAME}                                           
-                    if ( \${?} -ne '0' ) 
+                    helm history --tls \${CHARTNAME}                                           
+                    if [ \${?} -ne '0' ]
                     then                                        
                     # No chart release to update                                       
                         helm package ./accounts/chart/innovate-accounts/
