@@ -58,7 +58,7 @@ podTemplate(label: 'buildpod',
                     # No chart release to update                                       
                         helm package -u ./accounts/chart/innovate-accounts/
                         cloudctl catalog load-chart -a innovate-accounts-1.0.0.tgz
-                        helm install --tls --name innovate-accounts innovate-accounts --set image.repository=\${REGISTRY}/\${NAMESPACE}/accounts --set image.tag=${env.BUILD_NUMBER}
+                        helm install --name innovate-accounts local/innovate-accounts --set 'image.repository=mycluster.icp:8500/default/accounts' --set 'image.tag=37'
                     else
                     # Update Release                                        
                         helm upgrade --tls innovate-accounts ./accounts/chart/innovate-accounts/ --set image.repository=\${REGISTRY}/\${NAMESPACE}/accounts --set image.tag=${env.BUILD_NUMBER}
