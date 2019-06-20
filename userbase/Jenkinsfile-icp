@@ -56,7 +56,7 @@ podTemplate(label: 'buildpod',
                     if [ \${?} -ne '0' ]
                     then                                        
                     # No chart release to update                                       
-                        helm package -u ./portal/chart/innovate-userbase/
+                        helm package -u ./userbase/chart/innovate-userbase/
                         cloudctl catalog load-chart -a innovate-userbase-1.0.0.tgz
                         helm install --name innovate-userbase local/innovate-userbase --set 'image.repository=mycluster.icp:8500/default/innovate-userbase' --set 'image.tag=${env.BUILD_NUMBER}'
                     else
