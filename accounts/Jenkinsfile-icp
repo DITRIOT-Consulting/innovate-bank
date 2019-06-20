@@ -51,14 +51,14 @@ podTemplate(label: 'buildpod',
                     NAMESPACE='default'                         
                     REGISTRY='mycluster.icp:8500'
                     helm init --client-only --host 192.168.0.151:31514
-                    CHARTNAME=`helm list --tls --deployed --short accounts`
+                    CHARTNAME='innovate-accounts'
                     helm list --tls \${CHARTNAME}                                           
-                    if [ \${?} -ne "0" ]; then                                        
+                    if [ \${?} -ne "0" ] then                                        
                     # No chart release to update                                       
                         helm package ./accounts/chart/innovate-accounts/
                     else
                     # Update Release                                        
-                        helm upgrade --tls accounts ./accounts/chart/innovate-accounts/ --set image.repository=\${REGISTRY}/\${NAMESPACE}/accounts --set image.tag=${env.BUILD_NUMBER}
+                        helm upgrade --tls innovate-accounts ./accounts/chart/innovate-accounts/ --set image.repository=\${REGISTRY}/\${NAMESPACE}/accounts --set image.tag=${env.BUILD_NUMBER}
                     fi
                     """
                                              
