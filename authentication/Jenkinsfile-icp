@@ -56,7 +56,7 @@ podTemplate(label: 'buildpod',
                     if [ \${?} -ne '0' ]
                     then                                        
                     # No chart release to update                                       
-                        helm package -u ./portal/chart/innovate-authentication/
+                        helm package -u ./authentication/chart/innovate-authentication/
                         cloudctl catalog load-chart -a innovate-authentication-1.0.0.tgz
                         helm install --name innovate-authentication local/innovate-authentication --set 'image.repository=mycluster.icp:8500/default/innovate-authentication' --set 'image.tag=${env.BUILD_NUMBER}'
                     else
