@@ -37,7 +37,7 @@ podTemplate(label: 'buildpod',
                 DOCKER_PASSWORD='admin'
                 docker login -u=\${DOCKER_USER} -p=\${DOCKER_PASSWORD} \${REGISTRY}
                 set -x
-                docker push \${REGISTRY}/\${NAMESPACE}/portal:${env.BUILD_NUMBER}
+                docker push \${REGISTRY}/\${NAMESPACE}/innovate-portal:${env.BUILD_NUMBER}
                 """
             }
         }
